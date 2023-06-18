@@ -11,4 +11,5 @@ public interface FileMapper {
     public List<otreeFile> getFileRec(String username, String endWith);
     public void updateFileRec (Long id);
     public otreeFile getFileRecById(Long id);
+    public void removeFileRecById(Long id);
 }

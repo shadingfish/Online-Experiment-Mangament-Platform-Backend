@@ -29,12 +29,23 @@ public class FileUpdateController {
         List<otreeFile> otreeFiles=fileMapper.getFileRec(username,endWith);
         return CommonResult.success(otreeFiles);
     }
-    @PostMapping("/updateFileRec")
+
     @ResponseBody
+    @PostMapping("/update")
     public CommonResult<?> updateFileRec(@RequestBody otreeFile id){
+        System.out.println("touched update");
         fileMapper.updateFileRec(id.getId());
         otreeFile otreeFile=fileMapper.getFileRecById(id.getId());
         return CommonResult.success(otreeFile);
+    }
+
+    @ResponseBody
+    @PostMapping("/remove")
+    public CommonResult<?> removeFileRec(@RequestBody otreeFile id){
+        System.out.println("touched remove");
+        fileMapper.updateFileRec(id.getId());
+        fileMapper.removeFileRecById(id.getId());
+        return CommonResult.success("成功移除："+fileMapper.getFileRecById(id.getId()));
 
     }
 }
