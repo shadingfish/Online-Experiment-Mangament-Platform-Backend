@@ -42,7 +42,7 @@ public class ShellService {
             } else {
                 command = script;
             }
-            System.out.println(command);
+            //System.out.println(command);
             processBuilder.command("bash", "-c", command); // Use "bash" to execute the command
             Process process = processBuilder.start();
             process.waitFor(); // Wait for the process to complete
