@@ -99,19 +99,7 @@ public class FileUploadController {
             throw new IOException("unable to upload file");
         }
     }
-    @PostMapping("/getFileRec")
-    @ResponseBody
-    public CommonResult<?> getFileRec(@RequestBody String endWith,@RequestHeader("Authorization") String token ){
-        int l=endWith.length();
-        endWith=endWith.substring(0,l-1);
-        token=token.substring(7);
-        System.out.println(endWith);
-        if(!jwtTokenUtil.validateToken(token))
-            return CommonResult.error(50003,"invalid token");
-        String username=jwtTokenUtil.getUsernameFromToken(token);
-        List<otreeFile> otreeFiles=fileMapper.getFileRec(username,endWith);
-        return CommonResult.success(otreeFiles);
-    }
+
     private boolean isFileTypeAllowed(MultipartFile file) {
         String fileExtension = getFileExtension(file.getOriginalFilename());
         if (fileExtension != null) {

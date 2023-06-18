@@ -8,4 +8,10 @@
     <select id="getFileRec" resultType="com.sof_eng.model.DTO.otreeFile">
         SELECT * FROM file WHERE founder=#{username} AND filetype=#{endWith}
     </select>
+    <update id="updateFileRec" parameterType="java.lang.Long">
+        UPDATE file SET active_time = CURRENT_TIMESTAMP WHERE file.id = #{id}
+    </update>
+    <select id="getFileRecById" resultType="com.sof_eng.model.DTO.otreeFile">
+        SELECT * FROM file WHERE file.id=#{id}
+    </select>
 </mapper>
