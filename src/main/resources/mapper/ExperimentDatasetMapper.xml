@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sof_eng.Mapper.ExperimentDatasetMapper">
+    <insert id="addExperimentDataset" parameterType="com.sof_eng.model.DTO.ExperimentDataset">
+        INSERT INTO experiment_dataset (dataset, exp_name, exp_id, active_time)
+        VALUES (#{dataset}, #{expName}, #{expId}, #{activeTime})
+    </insert>
+
+    <delete id="deleteExperimentDatasetById" parameterType="java.lang.Long">
+        DELETE FROM experiment_dataset WHERE id = #{id}
+    </delete>
+
+    <update id="updateExperimentDataset" parameterType="com.sof_eng.model.DTO.ExperimentDataset">
+        UPDATE experiment_dataset SET
+                                      dataset = #{dataset},
+                                      exp_name = #{expName},
+                                      exp_id = #{expId},
+                                      active_time = #{activeTime}
+        WHERE id = #{id}
+    </update>
+
+    <select id="getExperimentDatasetById" resultType="com.sof_eng.model.DTO.ExperimentDataset">
+        SELECT * FROM experiment_dataset WHERE id = #{id}
+    </select>
+</mapper>

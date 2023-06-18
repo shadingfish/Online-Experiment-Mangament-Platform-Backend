@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sof_eng.Mapper.UserMapper">
+    <insert id="addUser" parameterType="com.sof_eng.model.User">
+        INSERT INTO user (username, chara, password, gender, phone, email, org)
+        VALUES (#{username}, #{chara}, #{password}, #{gender}, #{phone}, #{email}, #{org})
+    </insert>
+
+    <delete id="deleteUserById" parameterType="java.lang.Long">
+        DELETE FROM user WHERE id = #{id}
+    </delete>
+
+    <update id="updateUser" parameterType="com.sof_eng.model.User">
+        UPDATE user SET
+                        username = #{username},
+                        chara = #{chara},
+                        password = #{password},
+                        gender = #{gender},
+                        phone = #{phone},
+                        email = #{email},
+                        org = #{org}
+        WHERE id = #{id}
+    </update>
+
+    <select id="getUserById" resultType="com.sof_eng.model.User">
+        SELECT * FROM user WHERE id = #{id}
+    </select>
+
+    <select id="getUserByName" resultType="com.sof_eng.model.User">
+        SELECT * FROM user WHERE username = #{username}
+    </select>
+</mapper>

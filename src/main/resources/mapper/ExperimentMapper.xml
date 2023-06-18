@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sof_eng.Mapper.ExperimentMapper">
+
+<!--    private Long id;-->
+<!--    private String title;-->
+<!--    private String url;-->
+<!--    private String founder;-->
+<!--    private Long founderId;-->
+<!--    private Date createTime;-->
+<!--    private Integer volume;-->
+<!--    private Date activeTime;-->
+<!--    private String zipName;-->
+<!--    private String dictionary;-->
+
+    <insert id="addExperiment" parameterType="com.sof_eng.model.DTO.Experiment">
+        INSERT INTO experiment (title, url, founder, founder_id, create_time, volume, active_time, zip_name, dictionary)
+        VALUES (#{title}, #{url}, #{founder}, #{founderId}, #{createTime}, #{volume}, #{activeTime}, #{zipName}, #{dictionary})
+    </insert>
+
+    <delete id="deleteExperimentById" parameterType="java.lang.Long">
+        DELETE FROM experiment WHERE id = #{id}
+    </delete>
+
+    <update id="updateExperiment" parameterType="com.sof_eng.model.DTO.Experiment">
+        UPDATE experiment SET
+                              title = #{title},
+                              url = #{url},
+                              founder = #{founder},
+                              founder_id = #{founderId},
+                              create_time = #{createTime},
+                              volume = #{volume},
+                              active_time = #{activeTime}
+        WHERE id = #{id}
+    </update>
+
+    <select id="getExperimentById" resultType="com.sof_eng.model.DTO.Experiment">
+        SELECT * FROM experiment WHERE id = #{id}
+    </select>
+
+
+</mapper>

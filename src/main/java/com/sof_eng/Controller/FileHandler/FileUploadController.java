@@ -1,0 +1,180 @@
+package com.sof_eng.Controller.FileHandler;
+
+import com.sof_eng.Mapper.FileMapper;
+import com.sof_eng.Mapper.UserMapper;
+import com.sof_eng.Util.JwtTokenUtil;
+import com.sof_eng.model.CommonResult;
+import com.sof_eng.model.DTO.otreeFile;
+import com.sof_eng.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+
+@Controller
+@RequestMapping("/api")
+public class FileUploadController {
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+    @Autowired
+    private UserMapper userMapper;
+    @Autowired
+    private FileMapper fileMapper;
+
+    @Value("${file.upload-path}")
+    private String uploadPath;
+
+    @Value("${file.allowed-types}")
+    private String allowedTypes;
+
+    @Value("${file.max-size}")
+    private long maxFileSize;
+
+    @PostMapping("/upload")
+    @ResponseBody
+    public String uploadFile(@RequestParam("file") MultipartFile file,@RequestHeader("Authorization") String token) throws IOException {
+        if(!jwtTokenUtil.validateToken(token))
+            return "invalid token";
+        String username= jwtTokenUtil.getUsernameFromToken(token);
+        System.out.println(username);
+        if (file == null || file.isEmpty()) {
+            return "upload file can not be empty";
+        }
+
+        if (!StringUtils.hasText(uploadPath)) {
+            return "filepath not configured";
+        }
+
+        if (!isFileTypeAllowed(file)) {
+            return "file type not allowed";
+        }
+
+        /*if (!isFileContentValid(file)) {
+            return "文件内容不合法";
+        }*/
+
+        if (file.getSize() > maxFileSize) {
+            return "file size exceed limit:";
+        }
+
+        try {
+            uploadPath=System.getProperty("user.dir");
+            String fileName = file.getOriginalFilename();
+            User user=userMapper.getUserByName(username);
+            otreeFile otreeFile=new otreeFile();
+            if(fileName.endsWith(".py")){
+                uploadPath=uploadPath+File.separator+username+File.separator+"PyPath";
+                otreeFile.setFiletype("python");
+            }
+            else {
+                uploadPath = uploadPath + File.separator + username + File.separator + "ExPath";
+                otreeFile.setFiletype("otree");
+            }
+            otreeFile.setFounder(user.getUsername());
+            otreeFile.setDirectory(uploadPath+File.separator+fileName);
+            otreeFile.setTitle(fileName);
+            otreeFile.setFounder_id(user.getId());
+            fileMapper.insertFileRec(otreeFile);
+            System.out.println(uploadPath);
+            String filePath = uploadPath + File.separator + fileName;
+            System.out.println(filePath);
+            File dir=new File(uploadPath);
+            if(!dir.exists())
+                dir.mkdirs();
+            File dest = new File(filePath);
+            file.transferTo(dest);
+
+            // 将文件名保存到数据库中
+            return "file upload successfully";
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new IOException("unable to upload file");
+        }
+    }
+    @PostMapping("/getFileRec")
+    @ResponseBody
+    public CommonResult<?> getFileRec(@RequestBody String endWith,@RequestHeader("Authorization") String token ){
+        int l=endWith.length();
+        endWith=endWith.substring(0,l-1);
+        token=token.substring(7);
+        System.out.println(endWith);
+        if(!jwtTokenUtil.validateToken(token))
+            return CommonResult.error(50003,"invalid token");
+        String username=jwtTokenUtil.getUsernameFromToken(token);
+        List<otreeFile> otreeFiles=fileMapper.getFileRec(username,endWith);
+        return CommonResult.success(otreeFiles);
+    }
+    private boolean isFileTypeAllowed(MultipartFile file) {
+        String fileExtension = getFileExtension(file.getOriginalFilename());
+        if (fileExtension != null) {
+            List<String> allowedExtensions = Arrays.asList(allowedTypes.split(","));
+            return allowedExtensions.contains(fileExtension.toLowerCase());
+        }
+        return false;
+    }
+
+    /*private boolean isFileContentValid(MultipartFile file) throws IOException {
+        // 验证文件类型是否为图像类型
+        String contentType = file.getContentType();
+        if (contentType == null || !contentType.startsWith("image/")) {
+            return false;
+        }
+
+        // 进一步验证文件内容，例如使用文件头、魔术数字等方式
+
+        // 示例：验证文件内容为图片（JPEG 或 PNG）
+        byte[] fileBytes = file.getBytes();
+
+        // JPEG 文件的文件头：FF D8 FF E0
+        // PNG 文件的文件头：89 50 4E 47 0D 0A 1A 0A
+        if (fileBytes.length >= 4) {
+            byte[] jpegHeader = {(byte) 0xFF, (byte) 0xD8, (byte) 0xFF, (byte) 0xE0};
+            byte[] pngHeader = {(byte)0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A};
+
+            return startsWith(fileBytes, jpegHeader) || startsWith(fileBytes, pngHeader);
+        }
+
+        return false;
+    }*/
+
+    private boolean startsWith(byte[] array, byte[] prefix) {
+        if (array.length < prefix.length) {
+            return false;
+        }
+        for (int i = 0; i < prefix.length; i++) {
+            if (array[i] != prefix[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private String generateUniqueFileName(String originalFileName) {
+        String fileExtension = getFileExtension(originalFileName);
+        String uniqueFileName = UUID.randomUUID().toString();
+        if (fileExtension != null) {
+            uniqueFileName += "." + fileExtension;
+        }
+        return uniqueFileName;
+    }
+
+    private String getFileExtension(String fileName) {
+        if (StringUtils.hasText(fileName)) {
+            int dotIndex = fileName.lastIndexOf(".");
+            if (dotIndex >= 0 && dotIndex < fileName.length() - 1) {
+                return fileName.substring(dotIndex + 1);
+            }
+        }
+        return null;
+    }
+}
+
+
