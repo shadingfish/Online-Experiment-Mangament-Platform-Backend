@@ -23,7 +23,7 @@ public class FileUpdateController {
     @PostMapping("/updateFileRec")
     @CrossOrigin(methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS })
     public CommonResult<?> updateFileRec(@RequestBody otreeFile otreeFile){
-        System.out.println(otreeFile);
+        //System.out.println(otreeFile);
         fileMapper.updateFileRec(otreeFile.getId());
         return CommonResult.success(otreeFile);
     }

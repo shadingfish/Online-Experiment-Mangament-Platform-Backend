@@ -4,6 +4,7 @@ import com.sof_eng.Mapper.FileMapper;
 import com.sof_eng.Mapper.UserMapper;
 import com.sof_eng.Util.JwtTokenUtil;
 import com.sof_eng.model.CommonResult;
+import com.sof_eng.model.DTO.Experiment;
 import com.sof_eng.model.DTO.otreeFile;
 import com.sof_eng.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,28 +71,37 @@ public class FileUploadController {
             uploadPath=System.getProperty("user.dir");
             String fileName = file.getOriginalFilename();
             User user=userMapper.getUserByName(username);
-            otreeFile otreeFile=new otreeFile();
             if(fileName.endsWith(".py")){
+                otreeFile otreeFile=new otreeFile();
                 uploadPath=uploadPath+File.separator+username+File.separator+"PyPath";
                 otreeFile.setFiletype("python");
+                otreeFile.setFounder(user.getUsername());
+                otreeFile.setDirectory(uploadPath+File.separator+fileName);
+                otreeFile.setTitle(fileName);
+                otreeFile.setFounder_id(user.getId());
+                fileMapper.insertFileRec(otreeFile);
+                //System.out.println(uploadPath);
+                String filePath = uploadPath + File.separator + fileName;
+                System.out.println(filePath);
+                File dir=new File(uploadPath);
+                if(!dir.exists())
+                    dir.mkdirs();
+                File dest = new File(filePath);
+                file.transferTo(dest);
             }
             else {
+                Experiment experiment=new Experiment();
+                experiment.setFounder(user.getUsername());
+                experiment.setFounderId(user.getId());
                 uploadPath = uploadPath + File.separator + username + File.separator + "ExPath";
-                otreeFile.setFiletype("otree");
+                String filePath = uploadPath + File.separator + fileName;
+                File dir=new File(uploadPath);
+                if(!dir.exists())
+                    dir.mkdirs();
+                File dest = new File(filePath);
+                file.transferTo(dest);
+
             }
-            otreeFile.setFounder(user.getUsername());
-            otreeFile.setDirectory(uploadPath+File.separator+fileName);
-            otreeFile.setTitle(fileName);
-            otreeFile.setFounder_id(user.getId());
-            fileMapper.insertFileRec(otreeFile);
-            //System.out.println(uploadPath);
-            String filePath = uploadPath + File.separator + fileName;
-            System.out.println(filePath);
-            File dir=new File(uploadPath);
-            if(!dir.exists())
-                dir.mkdirs();
-            File dest = new File(filePath);
-            file.transferTo(dest);
 
             // 将文件名保存到数据库中
             return "file upload successfully";
@@ -100,7 +110,10 @@ public class FileUploadController {
             throw new IOException("unable to upload file");
         }
     }
+    private void unzipotree(String dest){
 
+
+    }
     private boolean isFileTypeAllowed(MultipartFile file) {
         String fileExtension = getFileExtension(file.getOriginalFilename());
         if (fileExtension != null) {

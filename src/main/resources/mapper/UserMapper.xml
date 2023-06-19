@@ -30,4 +30,7 @@
     <select id="getUserByName" resultType="com.sof_eng.model.User">
         SELECT * FROM user WHERE username = #{username}
     </select>
+    <select id="getAllUser" resultType="com.sof_eng.model.User">
+        SELECT * FROM user WHERE user.username != #{username}
+    </select>
 </mapper>

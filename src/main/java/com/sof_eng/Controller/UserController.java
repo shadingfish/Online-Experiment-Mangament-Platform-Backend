@@ -9,6 +9,8 @@ import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @Api(tags = "用户信息接口")
 @RequestMapping("/admin-api/user/")
@@ -17,6 +19,17 @@ public class UserController {
     private UserMapper userMapper;
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
+    @GetMapping("/getall")
+    public CommonResult<?> getAllUser(@RequestHeader("Authorization") String authHeader) {
+        // 解析Authorization请求头中的JWT令牌 Bearer access_token
+        String token = authHeader.substring(7);
+        String username = jwtTokenUtil.getUsernameFromToken(token);
+        User foundUser = userMapper.getUserByName(username);
+        if(foundUser.getChara().equals("普通用户"))
+            return CommonResult.error(114514,"没有权限进行该操作");
+        List<User> users=userMapper.getAllUser(username);
+        return CommonResult.success(users);
+    }
     @GetMapping("/profile/get")
     public CommonResult<?> getUserProfile(@RequestHeader("Authorization") String authHeader) {
         // 解析Authorization请求头中的JWT令牌 Bearer access_token

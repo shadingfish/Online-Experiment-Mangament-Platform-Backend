@@ -51,10 +51,10 @@ public class ExperimentController {
             String username = "";
 
             User founder = userService.getUserByName(username);
-            Experiment experiment = new Experiment(0L, experimentVO.getTitle(), experimentVO.getUrl(), username, founder.getId(), experimentVO.getCreateTime(), experimentVO.getVolume(), experimentVO.getActiveTime(), experimentVO.getZipName(), experimentVO.getDictionary());
-            experimentService.addExperiment(experiment);
+            //Experiment experiment = new Experiment(0L, experimentVO.getTitle(), experimentVO.getUrl(), username, founder.getId(), experimentVO.getCreateTime(), experimentVO.getVolume(), experimentVO.getActiveTime(), experimentVO.getZipName(), experimentVO.getDictionary());
+            experimentService.addExperiment(experimentVO);
 
-            return CommonResult.success(experiment);
+            return CommonResult.success(experimentVO);
         }catch(Exception e) {
             log.info(e.getMessage());
             return CommonResult.error(411, "出错：" + e.getMessage());
