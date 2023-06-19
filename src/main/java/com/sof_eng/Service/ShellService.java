@@ -45,10 +45,11 @@ public class ShellService {
             //System.out.println(command);
             processBuilder.command("bash", "-c", command); // Use "bash" to execute the command
             Process process = processBuilder.start();
-            process.waitFor(); // Wait for the process to complete
             if (command.contains("start")) {
                 return "otree server started successfully at port: " + port;
-            } else if(process.exitValue()==0){
+            }
+            process.waitFor(); // Wait for the process to complete
+            if(process.exitValue()==0){
                 BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
                 StringBuilder sb = new StringBuilder();
                 String line;

@@ -22,7 +22,6 @@ public class AuthController {
 
     @PostMapping("/login")
     public CommonResult<?> login(@RequestBody LoginRequest loginUser) {
-
         User user = userMapper.getUserByName(loginUser.getUsername());
         if (user == null) {
             return CommonResult.error(50007,"没有找到用户");
@@ -31,9 +30,7 @@ public class AuthController {
         if (!loginUser.getPassword().equals(user.getPassword())) {
             return CommonResult.error(50007,"登录失败，账号密码不正确");
         }
-
         String username = loginUser.getUsername();
-
         // 生成访问令牌和刷新令牌
         String accessToken = jwtTokenUtil.generateAccessToken(username);
         String refreshToken = jwtTokenUtil.generateRefreshToken(username);
