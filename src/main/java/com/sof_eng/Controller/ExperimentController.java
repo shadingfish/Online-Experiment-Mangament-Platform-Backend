@@ -70,7 +70,7 @@ public class ExperimentController {
 
         try{
             User founder = userService.getUserByName(username);
-            Experiment experiment = new Experiment(0L, experimentVO.getTitle(), "none", username, founder.getId(), experimentVO.getCreateTime(), experimentVO.getVolume(), experimentVO.getActiveTime(), experimentVO.getZipName(), experimentVO.getDictionary());
+            Experiment experiment = new Experiment(0L, experimentVO.getTitle(), "none", username, founder.getId(), experimentVO.getCreateTime(), experimentVO.getVolume(), experimentVO.getActiveTime(), experimentVO.getZipName(), experimentVO.getDirectory());
             experimentService.addExperiment(experiment);
 
             return CommonResult.success(experiment);

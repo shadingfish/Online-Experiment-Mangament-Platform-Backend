@@ -17,7 +17,7 @@ public class Experiment {
     private Integer volume;
     private Timestamp activeTime;
     private String zipName;
-    private String dictionary;
+    private String directory;
     // Getter and Setter methods
     // ...
 
@@ -31,7 +31,7 @@ public class Experiment {
         this.volume = volume;
         this.activeTime = activeTime;
         this.zipName = zipName;
-        this.dictionary = dictionary;
+        this.directory = dictionary;
     }
 
     public Experiment(String title, Timestamp createTime, Integer volume, Timestamp activeTime, String zipName, String dictionary) {
@@ -44,7 +44,7 @@ public class Experiment {
         this.volume = volume;
         this.activeTime = activeTime;
         this.zipName = zipName;
-        this.dictionary = dictionary;
+        this.directory = dictionary;
     }
 
     public Experiment() {
