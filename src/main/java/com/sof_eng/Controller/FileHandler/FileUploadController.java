@@ -1,5 +1,6 @@
 package com.sof_eng.Controller.FileHandler;
 
+import com.sof_eng.Mapper.ExperimentMapper;
 import com.sof_eng.Mapper.FileMapper;
 import com.sof_eng.Mapper.UserMapper;
 import com.sof_eng.Util.JwtTokenUtil;
@@ -18,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Controller
@@ -30,6 +32,8 @@ public class FileUploadController {
     private UserMapper userMapper;
     @Autowired
     private FileMapper fileMapper;
+    @Autowired
+    private ExperimentMapper experimentMapper;
 
     @Value("${file.upload-path}")
     private String uploadPath;
@@ -84,8 +88,6 @@ public class FileUploadController {
                 String filePath = uploadPath + File.separator + fileName;
                 System.out.println(filePath);
                 File dir=new File(uploadPath);
-                if(!dir.exists())
-                    dir.mkdirs();
                 File dest = new File(filePath);
                 file.transferTo(dest);
             }
@@ -96,11 +98,13 @@ public class FileUploadController {
                 uploadPath = uploadPath + File.separator + username + File.separator + "ExPath";
                 String filePath = uploadPath + File.separator + fileName;
                 File dir=new File(uploadPath);
-                if(!dir.exists())
-                    dir.mkdirs();
                 File dest = new File(filePath);
                 file.transferTo(dest);
-
+                System.out.println(uploadPath+"     "+fileName);
+                unzipotree(uploadPath,fileName);
+                experiment.setDirectory(uploadPath+File.separator+fileName.replaceFirst(".otreezip",""));
+                experiment.setTitle(fileName.replaceFirst(".otreezip",""));
+                experimentMapper.addExperiment(experiment);
             }
 
             // 将文件名保存到数据库中
@@ -110,9 +114,15 @@ public class FileUploadController {
             throw new IOException("unable to upload file");
         }
     }
-    private void unzipotree(String dest){
-
-
+    private void unzipotree(String uploadPath,String fileName) throws IOException {
+        ProcessBuilder processBuilder=new ProcessBuilder();
+        Map<String, String> env = processBuilder.environment();
+        String pathValue = env.get("PATH");
+        String newPathValue = pathValue + ":/home/ubuntu/.local/bin";
+        env.put("PATH", newPathValue);
+        processBuilder.command("bash", "-c", "cd "+uploadPath+" && "+"otree unzip "+fileName);
+        Process process = processBuilder.start();
+        return;
     }
     private boolean isFileTypeAllowed(MultipartFile file) {
         String fileExtension = getFileExtension(file.getOriginalFilename());

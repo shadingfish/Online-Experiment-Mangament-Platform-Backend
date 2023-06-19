@@ -15,8 +15,8 @@
 <!--    private String dictionary;-->
 
     <insert id="addExperiment" parameterType="com.sof_eng.model.DTO.Experiment">
-        INSERT INTO experiment (title, url, founder, founder_id, create_time, volume, active_time, zip_name, dictionary)
-        VALUES (#{title}, #{url}, #{founder}, #{founderId}, #{createTime}, #{volume}, #{activeTime}, #{zipName}, #{dictionary})
+        INSERT INTO experiment (title, url, founder, founder_id, create_time, active_time, directory)
+        VALUES (#{title}, #{url}, #{founder}, #{founderId}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, #{directory})
     </insert>
 
     <delete id="deleteExperimentById" parameterType="java.lang.Long">

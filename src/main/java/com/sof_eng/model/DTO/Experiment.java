@@ -14,9 +14,7 @@ public class Experiment {
     private String founder;
     private Long founderId;
     private Timestamp createTime;
-    private Integer volume;
     private Timestamp activeTime;
-    private String zipName;
     private String directory;
     // Getter and Setter methods
     // ...
