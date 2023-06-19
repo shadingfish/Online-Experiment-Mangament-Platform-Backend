@@ -3,6 +3,7 @@ package com.sof_eng.model.DTO;
 
 import lombok.Data;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Data
@@ -12,15 +13,15 @@ public class Experiment {
     private String url;
     private String founder;
     private Long founderId;
-    private Date createTime;
+    private Timestamp createTime;
     private Integer volume;
-    private Date activeTime;
+    private Timestamp activeTime;
     private String zipName;
     private String dictionary;
     // Getter and Setter methods
     // ...
 
-    public Experiment(Long id, String title, String url, String founder, Long founderId, Date createTime, Integer volume, Date activeTime, String zipName, String dictionary) {
+    public Experiment(Long id, String title, String url, String founder, Long founderId, Timestamp createTime, Integer volume, Timestamp activeTime, String zipName, String dictionary) {
         this.id = id;
         this.title = title;
         this.url = url;
@@ -33,10 +34,10 @@ public class Experiment {
         this.dictionary = dictionary;
     }
 
-    public Experiment(String title, String url, Date createTime, Integer volume, Date activeTime, String zipName, String dictionary) {
+    public Experiment(String title, Timestamp createTime, Integer volume, Timestamp activeTime, String zipName, String dictionary) {
         this.id = 0L;
         this.title = title;
-        this.url = url;
+        this.url = "none";
         this.founder = "founder";
         this.founderId = 0L;
         this.createTime = createTime;

@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Controller
+@RestController
 @RequestMapping("/api")
 public class FileUploadController {
     @Autowired
@@ -44,7 +45,7 @@ public class FileUploadController {
         if(!jwtTokenUtil.validateToken(token))
             return "invalid token";
         String username= jwtTokenUtil.getUsernameFromToken(token);
-        System.out.println(username);
+        //System.out.println(username);
         if (file == null || file.isEmpty()) {
             return "upload file can not be empty";
         }
@@ -83,7 +84,7 @@ public class FileUploadController {
             otreeFile.setTitle(fileName);
             otreeFile.setFounder_id(user.getId());
             fileMapper.insertFileRec(otreeFile);
-            System.out.println(uploadPath);
+            //System.out.println(uploadPath);
             String filePath = uploadPath + File.separator + fileName;
             System.out.println(filePath);
             File dir=new File(uploadPath);

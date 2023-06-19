@@ -4,6 +4,8 @@ import com.sof_eng.Mapper.FileMapper;
 import com.sof_eng.Util.JwtTokenUtil;
 import com.sof_eng.model.CommonResult;
 import com.sof_eng.model.DTO.otreeFile;
+import io.swagger.annotations.Api;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -11,30 +13,18 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
+@RestController
+@Api("python文件接口")
 @RequestMapping("/api")
 public class FileUpdateController {
     @Autowired
-    JwtTokenUtil jwtTokenUtil;
-    @Autowired
     FileMapper fileMapper;
-    @PostMapping("/getFileRec")
     @ResponseBody
-    public CommonResult<?> getFileRec(@RequestBody String endWith, @RequestHeader("Authorization") String token ){
-        int l=endWith.length();
-        endWith=endWith.substring(0,l-1);
-        token=token.substring(7);
-        if(!jwtTokenUtil.validateToken(token))
-            return CommonResult.error(50003,"invalid token");
-        String username=jwtTokenUtil.getUsernameFromToken(token);
-        List<otreeFile> otreeFiles=fileMapper.getFileRec(username,endWith);
-        return CommonResult.success(otreeFiles);
-    }
     @PostMapping("/updateFileRec")
-    @ResponseBody
-    public CommonResult<?> updateFileRec(@RequestBody otreeFile id){
-        fileMapper.updateFileRec(id.getId());
-        otreeFile otreeFile=fileMapper.getFileRecById(id.getId());
+    @CrossOrigin(methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS })
+    public CommonResult<?> updateFileRec(@RequestBody otreeFile otreeFile){
+        System.out.println(otreeFile);
+        fileMapper.updateFileRec(otreeFile.getId());
         return CommonResult.success(otreeFile);
-
     }
 }

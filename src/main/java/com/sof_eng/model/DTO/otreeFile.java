@@ -12,8 +12,8 @@ public class otreeFile {
     private String title;
     private String founder;
     private Long founder_id;
-    private String create_time;
-    private String active_time;
+    private Timestamp create_time;
+    private Timestamp active_time;
     private String directory;
     private String filetype;
 }
