@@ -5,6 +5,8 @@ import com.sof_eng.model.DTO.Distribution;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @Mapper
 public interface DistributionMapper {
@@ -12,4 +14,6 @@ public interface DistributionMapper {
     void deleteDistributionById(Long id);
     void updateDistribution(Distribution distribution);
     Distribution getDistributionById(Long id);
+    List<String> getUsernameByExpId(Long expId);
+    Distribution getDistributionByParExp(Long expId, String participant);
 }

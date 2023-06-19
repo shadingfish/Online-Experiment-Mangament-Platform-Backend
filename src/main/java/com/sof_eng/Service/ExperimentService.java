@@ -32,4 +32,10 @@ public class ExperimentService {
     public List<Experiment> getListByUsername(String username){
         return experimentMapper.getListByUsername(username);
     }
+
+    public int startExp(Long expId, String url){
+        Experiment experiment = experimentMapper.getExperimentById(expId);
+        experiment.setUrl(url);
+        return experimentMapper.startExp(experiment);
+    }
 }

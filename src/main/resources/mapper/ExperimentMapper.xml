@@ -3,16 +3,21 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sof_eng.Mapper.ExperimentMapper">
 
-<!--    private Long id;-->
-<!--    private String title;-->
-<!--    private String url;-->
-<!--    private String founder;-->
-<!--    private Long founderId;-->
-<!--    private Date createTime;-->
-<!--    private Integer volume;-->
-<!--    private Date activeTime;-->
-<!--    private String zipName;-->
-<!--    private String dictionary;-->
+    <!-- 在mapper标签内定义resultMap -->
+    <resultMap id="experimentResultMap" type="com.sof_eng.model.DTO.Experiment">
+        <!-- 配置每个属性的映射关系 -->
+        <id property="id" column="id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+        <result property="title" column="title" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="url" column="url" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="founder" column="founder" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="founderId" column="founder_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+        <result property="createTime" column="create_time" javaType="java.sql.Timestamp" jdbcType="TIMESTAMP"/>
+        <result property="volume" column="volume" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result property="activeTime" column="active_time" javaType="java.sql.Timestamp" jdbcType="TIMESTAMP"/>
+        <result property="zipName" column="zip_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="dictionary" column="dictionary" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+
 
     <insert id="addExperiment" parameterType="com.sof_eng.model.DTO.Experiment">
         INSERT INTO experiment (title, url, founder, founder_id, create_time, volume, active_time, zip_name, dictionary)
@@ -35,9 +40,18 @@
         WHERE id = #{id}
     </update>
 
-    <select id="getExperimentById" resultType="com.sof_eng.model.DTO.Experiment">
+    <select id="getExperimentById" resultMap="experimentResultMap">
         SELECT * FROM experiment WHERE id = #{id}
     </select>
 
+    <select id="getListByUsername" resultMap="experimentResultMap">
+        SELECT * FROM experiment WHERE founder = #{username}
+    </select>
+
+    <update id="startExp" parameterType="com.sof_eng.model.DTO.Experiment">
+        UPDATE experiment
+        SET url = #{url}
+        WHERE id = #{id}
+    </update>
 
 </mapper>

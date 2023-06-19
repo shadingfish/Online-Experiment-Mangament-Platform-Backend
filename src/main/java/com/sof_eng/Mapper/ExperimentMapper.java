@@ -19,4 +19,6 @@ public interface ExperimentMapper {
     Experiment getExperimentById(Long id);
 
     List<Experiment> getListByUsername(String username);
+
+    int startExp(Experiment experiment);
 }

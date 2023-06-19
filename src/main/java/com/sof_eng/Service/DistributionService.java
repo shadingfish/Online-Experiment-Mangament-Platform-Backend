@@ -6,6 +6,8 @@ import com.sof_eng.model.DTO.Distribution;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class DistributionService {
     @Autowired
@@ -25,6 +27,14 @@ public class DistributionService {
 
     public Distribution getDistributionById(Long id) {
         return distributionMapper.getDistributionById(id);
+    }
+
+    public List<String> getUsernameByExpId(Long expId) {
+        return distributionMapper.getUsernameByExpId(expId);
+    }
+
+    public Distribution getDistributionByParExp(Long expId, String participant){
+        return distributionMapper.getDistributionByParExp(expId, participant);
     }
 }
 

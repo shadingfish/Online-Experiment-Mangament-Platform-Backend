@@ -13,4 +13,17 @@ import lombok.Data;
     private String phone;
     private String org;
 
+    public User() {
+    }
+
+    public User(Long id, String username, String chara, String password, String email, String gender, String phone, String org) {
+        this.id = id;
+        this.username = username;
+        this.chara = chara;
+        this.password = password;
+        this.email = email;
+        this.gender = gender;
+        this.phone = phone;
+        this.org = org;
+    }
 }
