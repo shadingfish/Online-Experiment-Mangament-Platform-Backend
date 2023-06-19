@@ -3,6 +3,7 @@ package com.sof_eng.Service;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.Map;
 
 import com.sof_eng.Util.JwtTokenUtil;
@@ -44,9 +45,18 @@ public class ShellService {
             }
             //System.out.println(command);
             processBuilder.command("bash", "-c", command); // Use "bash" to execute the command
+            System.out.println(command);
             Process process = processBuilder.start();
             if (command.contains("start")) {
-                return "otree server started successfully at port: " + port;
+                try {
+                    URL url = new URL("http://checkip.amazonaws.com");
+                    BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+                    String ip = br.readLine();
+                    return "http://"+ip+":"+port;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return "failed to start otree server";
+                }
             }
             process.waitFor(); // Wait for the process to complete
             if(process.exitValue()==0){

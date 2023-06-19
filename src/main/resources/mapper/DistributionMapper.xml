@@ -51,4 +51,8 @@
           AND participant = #{participant}
     </select>
 
+    <select id="getListByUserId" resultMap="distributionResultMap">
+        SELECT * FROM distribution WHERE participant_id = #{userId}
+    </select>
+
 </mapper>

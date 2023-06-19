@@ -104,6 +104,7 @@ public class FileUploadController {
                 unzipotree(uploadPath,fileName);
                 experiment.setDirectory(uploadPath+File.separator+fileName.replaceFirst(".otreezip",""));
                 experiment.setTitle(fileName.replaceFirst(".otreezip",""));
+                experiment.setUrl("N/A");
                 experimentMapper.addExperiment(experiment);
             }
 
@@ -120,7 +121,7 @@ public class FileUploadController {
         String pathValue = env.get("PATH");
         String newPathValue = pathValue + ":/home/ubuntu/.local/bin";
         env.put("PATH", newPathValue);
-        processBuilder.command("bash", "-c", "cd "+uploadPath+" && "+"otree unzip "+fileName);
+        processBuilder.command("bash", "-c", "cd "+uploadPath+" && "+"otree unzip "+fileName+" && rm -f "+fileName);
         Process process = processBuilder.start();
         return;
     }

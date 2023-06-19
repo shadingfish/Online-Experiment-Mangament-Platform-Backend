@@ -10,6 +10,7 @@ import java.util.List;
 @Repository
 @Mapper
 public interface DistributionMapper {
+    List<Distribution> getListByUserId(Long userId);
     void addDistribution(Distribution distribution);
     void deleteDistributionById(Long id);
     void updateDistribution(Distribution distribution);

@@ -11,9 +11,9 @@
         <result property="url" column="url" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result property="founder" column="founder" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result property="founderId" column="founder_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
-        <result property="createTime" column="create_time" javaType="java.sql.Timestamp" jdbcType="TIMESTAMP"/>
+        <result property="create_time" column="create_time" javaType="java.sql.Timestamp" jdbcType="TIMESTAMP"/>
         <result property="volume" column="volume" javaType="java.lang.Integer" jdbcType="INTEGER"/>
-        <result property="activeTime" column="active_time" javaType="java.sql.Timestamp" jdbcType="TIMESTAMP"/>
+        <result property="active_time" column="active_time" javaType="java.sql.Timestamp" jdbcType="TIMESTAMP"/>
         <result property="zipName" column="zip_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result property="dictionary" column="dictionary" javaType="java.lang.String" jdbcType="VARCHAR"/>
     </resultMap>
@@ -34,9 +34,9 @@
                               url = #{url},
                               founder = #{founder},
                               founder_id = #{founderId},
-                              create_time = #{createTime},
+                              create_time = #{create_Time},
                               volume = #{volume},
-                              active_time = #{activeTime}
+                              active_time = #{active_Time}
         WHERE id = #{id}
     </update>
 

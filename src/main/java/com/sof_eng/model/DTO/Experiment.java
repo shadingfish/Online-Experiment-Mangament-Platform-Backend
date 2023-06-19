@@ -13,39 +13,33 @@ public class Experiment {
     private String url;
     private String founder;
     private Long founderId;
-    private Timestamp createTime;
-    private Integer volume;
-    private Timestamp activeTime;
-    private String zipName;
+    private Timestamp create_time;
+    private Timestamp active_time;
     private String directory;
     // Getter and Setter methods
     // ...
 
-    public Experiment(Long id, String title, String url, String founder, Long founderId, Timestamp createTime, Integer volume, Timestamp activeTime, String zipName, String dictionary) {
+/*    public Experiment(Long id, String title, String url, String founder, Long founderId, Timestamp createTime, Integer volume, Timestamp activeTime, String dictionary) {
         this.id = id;
         this.title = title;
         this.url = url;
         this.founder = founder;
         this.founderId = founderId;
-        this.createTime = createTime;
-        this.volume = volume;
-        this.activeTime = activeTime;
-        this.zipName = zipName;
+        this.create_Time = createTime;
+        this.active_Time = activeTime;
         this.directory = dictionary;
     }
 
-    public Experiment(String title, Timestamp createTime, Integer volume, Timestamp activeTime, String zipName, String dictionary) {
+    public Experiment(String title, Timestamp createTime, Integer volume, Timestamp activeTime, String dictionary) {
         this.id = 0L;
         this.title = title;
         this.url = "none";
         this.founder = "founder";
         this.founderId = 0L;
-        this.createTime = createTime;
-        this.volume = volume;
-        this.activeTime = activeTime;
-        this.zipName = zipName;
+        this.create_Time = createTime;
+        this.active_Time = activeTime;
         this.directory = dictionary;
-    }
+    }*/
 
     public Experiment() {
     }

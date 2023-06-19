@@ -26,7 +26,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/experiment/")
+@RequestMapping("/experiment")
 public class ExperimentController {
 
 
@@ -39,7 +39,7 @@ public class ExperimentController {
     @Autowired
     DistributionService distributionService;
 
-    /**
+/*    *//**
      * experimentVO {
      *
      *     private String title;
@@ -47,14 +47,14 @@ public class ExperimentController {
      *     private Integer volume;
      *     private Date activeTime;
      *     private String zipName;
-     *     private String dictionary
+     *     private String directory
      *
      *     }
      * 插入新的实验
      * @param authHeader 检验头
      * @param experimentVO 前端传过来的数据体
      * @return 一个Experiment类，即创建成功的数据库记录 CommonResult.success(experiment)
-     */
+     *//*
     @CrossOrigin
     @PostMapping("/upload")
     public CommonResult<?> uploadExp(@RequestHeader("Authorization") String authHeader, @RequestBody Experiment experimentVO){
@@ -78,7 +78,7 @@ public class ExperimentController {
             log.info(e.getMessage());
             return CommonResult.error(411, "出错：" + e.getMessage());
         }
-    }
+    }*/
 
     /**
      * 查询所有实验
@@ -110,22 +110,33 @@ public class ExperimentController {
             return CommonResult.error(411, "出错：" + e.getMessage());
         }
     }
+    /**
+     *
+     * @param experiment 实验
+     * @param authHeader 检验头
+     * @return 所修改的实验 CommonResult.success(experiment);
+     */
+    @CrossOrigin
+    @PostMapping("/update")
+    public CommonResult<?> updateExp(@RequestHeader("Authorization") String authHeader, @RequestBody Experiment experiment){
+        String token = authHeader.substring(7);
+        if(!jwtTokenUtil.validateToken(token))
+            return CommonResult.error(400, "invalid token");
+        experimentService.updateExperiment(experiment);
+        return CommonResult.success(experiment);
+    }
+
 
     /**
      *
-     * @param id 实验id
      * @param authHeader 检验头
      * @return 所删除的实验 CommonResult.success(experiment);
      */
     @CrossOrigin
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     public CommonResult<?> deleteExp(
-            @RequestParam("expId") Long id, @RequestHeader("Authorization") String authHeader){
-        //验证expId
-        Experiment experiment = experimentService.getExperimentById(id);
-        if(experiment == null){
-            return CommonResult.error(400, "invalid expId");
-        }
+            @RequestBody Experiment experiment, @RequestHeader("Authorization") String authHeader){
+        Long id=experiment.getId();
         // 解析Authorization请求头中的JWT令牌 Bearer access_token
         String token = authHeader.substring(7);
         if(!jwtTokenUtil.validateToken(token))
@@ -184,8 +195,8 @@ public class ExperimentController {
             distribution.setUrl("none");
             distribution.setParticipant(user.getUsername());
             distribution.setParticipantId(user.getId());
-            distribution.setCreateTime(experiment.getCreateTime());
-            distribution.setActiveTime(experiment.getActiveTime());
+            distribution.setCreateTime(experiment.getCreate_time());
+            distribution.setActiveTime(experiment.getActive_time());
 
             distributionService.addDistribution(distribution);
 
@@ -252,9 +263,8 @@ public class ExperimentController {
                 distribution.setUrl("none");
                 distribution.setParticipant(participant);
                 distribution.setParticipantId(user.getId());
-                distribution.setCreateTime(experiment.getCreateTime());
-                distribution.setActiveTime(experiment.getActiveTime());
-
+                distribution.setCreateTime(experiment.getCreate_time());
+                distribution.setActiveTime(experiment.getActive_time());
                 distributionService.addDistribution(distribution);
                 distributionList.add(distribution);
             }
