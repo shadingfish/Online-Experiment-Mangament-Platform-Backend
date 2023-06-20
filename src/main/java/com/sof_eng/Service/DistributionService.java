@@ -36,5 +36,13 @@ public class DistributionService {
     public Distribution getDistributionByParExp(Long expId, String participant){
         return distributionMapper.getDistributionByParExp(expId, participant);
     }
+
+    public List<Distribution> getListByExpId(Long expId) {
+        return distributionMapper.getListByExpId(expId);
+    }
+
+    public List<Distribution> getListByUserId(Long id) {
+        return distributionMapper.getListByUserId(id);
+    }
 }
 

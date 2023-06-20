@@ -17,4 +17,5 @@ public interface DistributionMapper {
     Distribution getDistributionById(Long id);
     List<String> getUsernameByExpId(Long expId);
     Distribution getDistributionByParExp(Long expId, String participant);
+    List<Distribution> getListByExpId(Long expId);
 }

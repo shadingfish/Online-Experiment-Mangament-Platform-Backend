@@ -55,4 +55,8 @@
         SELECT * FROM distribution WHERE participant_id = #{userId}
     </select>
 
+    <select id="getListByExpId" resultMap="distributionResultMap">
+        SELECT * FROM distribution WHERE exp_id = #{expId}
+    </select>
+
 </mapper>
