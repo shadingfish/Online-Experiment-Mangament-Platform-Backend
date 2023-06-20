@@ -19,6 +19,7 @@ public class Experiment {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", locale = "zh", timezone = "GMT+8")
     private Timestamp active_time;
     private String directory;
+    private String description;
     // Getter and Setter methods
     // ...
 
