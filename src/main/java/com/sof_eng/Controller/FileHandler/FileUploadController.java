@@ -111,7 +111,6 @@ public class FileUploadController {
             // 将文件名保存到数据库中
             return "file upload successfully";
         } catch (IOException e) {
-            e.printStackTrace();
             throw new IOException("unable to upload file");
         }
     }
