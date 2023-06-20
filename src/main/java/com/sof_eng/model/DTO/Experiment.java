@@ -1,6 +1,7 @@
 package com.sof_eng.model.DTO;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.sql.Timestamp;
@@ -13,7 +14,9 @@ public class Experiment {
     private String url;
     private String founder;
     private Long founderId;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", locale = "zh", timezone = "GMT+8")
     private Timestamp create_time;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", locale = "zh", timezone = "GMT+8")
     private Timestamp active_time;
     private String directory;
     // Getter and Setter methods

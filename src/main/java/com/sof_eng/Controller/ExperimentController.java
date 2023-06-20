@@ -285,8 +285,8 @@ public class ExperimentController {
      * @return 返回了一个List<String>，这是所有该实验参与者username组成的列表
      */
     @CrossOrigin
-    @GetMapping("/getParticipant")
-    public CommonResult<?> getParticipant(@RequestParam("expId") Long expId, @RequestHeader("Authorization") String authHeader){
+    @PostMapping("/getParticipant")
+    public CommonResult<?> getParticipant(@RequestBody Long expId, @RequestHeader("Authorization") String authHeader){
         //验证expId
         Experiment experiment = experimentService.getExperimentById(expId);
         if(experiment == null){
