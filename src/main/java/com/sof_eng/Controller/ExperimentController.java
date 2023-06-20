@@ -221,7 +221,6 @@ public class ExperimentController {
         String username= jwtTokenUtil.getUsernameFromToken(token);
         System.out.println("登录人:" + username);
 
-        Distribution distribution = new Distribution();
         List<Distribution> distributionList = new ArrayList<>();
 
         try{
@@ -247,6 +246,7 @@ public class ExperimentController {
                 }
 
                 // 构造 Distribution 对象并插入到数据库
+                Distribution distribution = new Distribution();
                 distribution.setExpId(expId);
                 distribution.setExpName(experiment.getTitle());
                 distribution.setUrl("none");
@@ -259,6 +259,7 @@ public class ExperimentController {
                 distributionList.add(distribution);
             }
 
+            System.out.println("所有新增的参与者:" + distributionList);
             workbook.close();
             return CommonResult.success(distributionList);
         } catch (IOException e) {
