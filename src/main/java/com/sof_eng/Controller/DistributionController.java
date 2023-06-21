@@ -76,15 +76,15 @@ public class DistributionController {
             String username = jwtTokenUtil.getUsernameFromToken(token);
             User founduser=userService.getUserByName(username);
             List<Distribution> distributions=distributionService.getListByUserId(founduser.getId());
-            List<DistributionVo> distributionVoList = new ArrayList<>();
-            for(Distribution distribution:distributions){
-                DistributionVo distributionVo=new DistributionVo();
-                distributionVo.setExpId(distribution.getExpId());
-                distributionVo.setExpName(distribution.getExpName());
-                distributionVo.setUrl(distribution.getUrl());
-                distributionVoList.add(distributionVo);
-            }
-            return CommonResult.success(distributionVoList);
+//            List<DistributionVo> distributionVoList = new ArrayList<>();
+//            for(Distribution distribution:distributions){
+//                DistributionVo distributionVo=new DistributionVo();
+//                distributionVo.setExpId(distribution.getExpId());
+//                distributionVo.setExpName(distribution.getExpName());
+//                distributionVo.setUrl(distribution.getUrl());
+//                distributionVoList.add(distributionVo);
+//            }
+            return CommonResult.success(distributions);
         }catch(Exception e) {
             log.info(e.getMessage());
             return CommonResult.error(411, "出错：" + e.getMessage());
