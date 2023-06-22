@@ -43,7 +43,8 @@ public class ShellService {
             } else {
                 command = script;
             }
-            //System.out.println(command);
+            System.out.println(command);
+            System.out.println(System.getProperty("user.dir"));
             processBuilder.command("bash", "-c", command); // Use "bash" to execute the command
             System.out.println(command);
             Process process = processBuilder.start();

@@ -16,7 +16,7 @@ public class CodeController {
         String decodedCode = URLDecoder.decode(code, "UTF-8");
         int length=decodedCode.length()-1;
         decodedCode=decodedCode.substring(0,length);
-        try (FileWriter writer = new FileWriter("PYTHON_ONLINE_COMPILER.py")) {
+        try (FileWriter writer = new FileWriter("TEMP.py")) {
             writer.write(decodedCode);
         } catch (IOException e) {
             e.printStackTrace();

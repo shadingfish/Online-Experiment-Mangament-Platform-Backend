@@ -114,16 +114,21 @@ public class FileUploadController {
             return "file upload successfully";
         } catch (IOException e) {
             throw new IOException("unable to upload file");
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
-    private void unzipotree(String uploadPath,String fileName, String uniqueFileName) throws IOException {
+    private void unzipotree(String uploadPath,String fileName, String uniqueFileName) throws IOException, InterruptedException {
         ProcessBuilder processBuilder=new ProcessBuilder();
         Map<String, String> env = processBuilder.environment();
         String pathValue = env.get("PATH");
         String newPathValue = pathValue + ":/home/ubuntu/.local/bin";
         env.put("PATH", newPathValue);
-        processBuilder.command("bash", "-c", "cd "+uploadPath+" && "+"otree unzip "+fileName+" && rm -f "+fileName+" && mv "+fileName.replaceFirst(".otreezip","")+"/ "+uniqueFileName.replaceFirst(".otreezip",""));
+        String path="cd "+uploadPath+" && "+"otree unzip "+fileName+" && rm -f "+fileName+" && mv "+fileName.replaceFirst(".otreezip","")+"/ "+uniqueFileName.replaceFirst(".otreezip","");
+        System.out.println(path);
+        processBuilder.command("bash", "-c",path);
         Process process = processBuilder.start();
+        process.waitFor();
         return;
     }
 
