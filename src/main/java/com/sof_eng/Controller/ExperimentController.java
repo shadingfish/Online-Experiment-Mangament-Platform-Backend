@@ -218,7 +218,7 @@ public class ExperimentController {
      */
     @CrossOrigin
     @PostMapping("/uploadParticipant")
-    public CommonResult<?> uploadParticipant(@RequestPart("expId") Long expId, @RequestPart("file") MultipartFile file,@RequestHeader("Authorization") String authHeader){
+    public CommonResult<?> uploadParticipant(@RequestParam("expId") Long expId, @RequestPart("file") MultipartFile file,@RequestHeader("Authorization") String authHeader){
         //验证expId
         Experiment experiment = experimentService.getExperimentById(expId);
         if(experiment == null){
@@ -245,7 +245,13 @@ public class ExperimentController {
             for (Row row : sheet) {
                 // 获取参与者信息，假设参与者信息在第一列（索引为0）
                 Cell participantCell = row.getCell(0);
-                String participant = participantCell.getStringCellValue();
+
+                String participant;
+                try {
+                    participant = participantCell.getStringCellValue();
+                }catch(Exception e) {
+                    participant = String.valueOf(participantCell.getNumericCellValue());
+                }
 
                 User user = userService.getUserByName(participant);
                 if(user == null){
