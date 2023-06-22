@@ -88,20 +88,20 @@ public class ExperimentController {
     @CrossOrigin
     @GetMapping("/getlist")
     public CommonResult<?> getExpList(@RequestHeader("Authorization") String authHeader){
-        System.out.println("authHeader: " + authHeader);
+        //System.out.println("authHeader: " + authHeader);
         // 解析Authorization请求头中的JWT令牌 Bearer access_token
         String token = authHeader.substring(7);
-        System.out.println("token: " + token);
+        //System.out.println("token: " + token);
         if(!jwtTokenUtil.validateToken(token))
             return CommonResult.error(400, "invalid token");
         //JWT反解析
         String username= jwtTokenUtil.getUsernameFromToken(token);
-        System.out.println(username);
+        //System.out.println(username);
 
         try{
             List<Experiment> expList = experimentService.getListByUsername(username);
-            System.out.print("成功查询到实验列表：");
-            System.out.println(expList);
+            //System.out.print("成功查询到实验列表：");
+            //System.out.println(expList);
 
             return CommonResult.success(expList);
 
@@ -143,7 +143,7 @@ public class ExperimentController {
             return CommonResult.error(400, "invalid token");
         //JWT反解析
         String username= jwtTokenUtil.getUsernameFromToken(token);
-        System.out.println("登录人:" + username);
+        //System.out.println("登录人:" + username);
 
         try{
             experimentService.deleteExperimentById(id);
@@ -174,7 +174,7 @@ public class ExperimentController {
             return CommonResult.error(400, "invalid token");
         //JWT反解析
         String username= jwtTokenUtil.getUsernameFromToken(token);
-        System.out.println("登录人:" + username);
+        //System.out.println("登录人:" + username);
 
         try{
             User user = userService.getUserById(userId);
@@ -230,7 +230,7 @@ public class ExperimentController {
             return CommonResult.error(400, "invalid token");
         //JWT反解析
         String username= jwtTokenUtil.getUsernameFromToken(token);
-        System.out.println("登录人:" + username);
+        //System.out.println("登录人:" + username);
 
         List<Distribution> distributionList = new ArrayList<>();
 
@@ -275,7 +275,7 @@ public class ExperimentController {
                 distributionList.add(distribution);
             }
 
-            System.out.println("所有新增的参与者:" + distributionList);
+            //System.out.println("所有新增的参与者:" + distributionList);
             workbook.close();
             return CommonResult.success(distributionList);
         } catch (IOException e) {
@@ -305,7 +305,7 @@ public class ExperimentController {
             return CommonResult.error(400, "invalid token");
         //JWT反解析
         String username= jwtTokenUtil.getUsernameFromToken(token);
-        System.out.println("登录人:" + username);
+        //System.out.println("登录人:" + username);
 
         try{
             List<String> participants = distributionService.getUsernameByExpId(expId);
@@ -339,7 +339,7 @@ public class ExperimentController {
             return CommonResult.error(400, "invalid token");
         //JWT反解析
         String username= jwtTokenUtil.getUsernameFromToken(token);
-        System.out.println("登录人:" + username);
+        //System.out.println("登录人:" + username);
         Distribution distribution = new Distribution();
 
         try{
