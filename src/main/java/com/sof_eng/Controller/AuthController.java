@@ -22,6 +22,9 @@ public class AuthController {
 
     @PostMapping("/login")
     public CommonResult<?> login(@RequestBody LoginRequest loginUser) {
+
+        System.out.println("检测到登录用户: " + loginUser);
+
         User user = userMapper.getUserByName(loginUser.getUsername());
         if (user == null) {
             return CommonResult.error(50007,"没有找到用户");
