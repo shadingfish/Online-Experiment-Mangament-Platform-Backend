@@ -218,7 +218,7 @@ public class ExperimentController {
      */
     @CrossOrigin
     @PostMapping("/uploadParticipant")
-    public CommonResult<?> uploadParticipant(@RequestParam("expId") Long expId, @RequestBody MultipartFile file,@RequestHeader("Authorization") String authHeader){
+    public CommonResult<?> uploadParticipant(@RequestPart("expId") Long expId, @RequestPart("file") MultipartFile file,@RequestHeader("Authorization") String authHeader){
         //验证expId
         Experiment experiment = experimentService.getExperimentById(expId);
         if(experiment == null){
