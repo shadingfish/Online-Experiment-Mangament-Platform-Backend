@@ -1,6 +1,7 @@
 package com.sof_eng.model.DTO;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.sql.Date;
@@ -12,7 +13,9 @@ public class otreeFile {
     private String title;
     private String founder;
     private Long founder_id;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", locale = "zh", timezone = "GMT+8")
     private Timestamp create_time;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", locale = "zh", timezone = "GMT+8")
     private Timestamp active_time;
     private String directory;
     private String filetype;

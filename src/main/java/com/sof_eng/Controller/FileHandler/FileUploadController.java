@@ -1,9 +1,11 @@
 package com.sof_eng.Controller.FileHandler;
 
+import com.sof_eng.Mapper.ExperimentMapper;
 import com.sof_eng.Mapper.FileMapper;
 import com.sof_eng.Mapper.UserMapper;
 import com.sof_eng.Util.JwtTokenUtil;
 import com.sof_eng.model.CommonResult;
+import com.sof_eng.model.DTO.Experiment;
 import com.sof_eng.model.DTO.otreeFile;
 import com.sof_eng.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Controller
@@ -29,6 +32,8 @@ public class FileUploadController {
     private UserMapper userMapper;
     @Autowired
     private FileMapper fileMapper;
+    @Autowired
+    private ExperimentMapper experimentMapper;
 
     @Value("${file.upload-path}")
     private String uploadPath;
@@ -70,35 +75,56 @@ public class FileUploadController {
             uploadPath=System.getProperty("user.dir");
             String fileName = file.getOriginalFilename();
             User user=userMapper.getUserByName(username);
-            otreeFile otreeFile=new otreeFile();
             if(fileName.endsWith(".py")){
+                otreeFile otreeFile=new otreeFile();
                 uploadPath=uploadPath+File.separator+username+File.separator+"PyPath";
                 otreeFile.setFiletype("python");
+                otreeFile.setFounder(user.getUsername());
+                String uniqueFileName=generateUniqueFileName(fileName);
+                otreeFile.setDirectory(uploadPath+File.separator+uniqueFileName);
+                otreeFile.setTitle(fileName);
+                otreeFile.setFounder_id(user.getId());
+                fileMapper.insertFileRec(otreeFile);
+                //System.out.println(uploadPath);
+                String filePath = uploadPath + File.separator + uniqueFileName;
+                System.out.println(filePath);
+                File dir=new File(uploadPath);
+                File dest = new File(filePath);
+                file.transferTo(dest);
             }
             else {
+                Experiment experiment=new Experiment();
+                experiment.setFounder(user.getUsername());
+                experiment.setFounderId(user.getId());
+                String uniqueFileName=generateUniqueFileName(fileName);
                 uploadPath = uploadPath + File.separator + username + File.separator + "ExPath";
-                otreeFile.setFiletype("otree");
+                String filePath = uploadPath + File.separator + fileName;
+                File dir=new File(uploadPath);
+                File dest = new File(filePath);
+                file.transferTo(dest);
+                System.out.println(uploadPath+"     "+fileName);
+                unzipotree(uploadPath,fileName,uniqueFileName);
+                experiment.setDirectory(uploadPath+File.separator+uniqueFileName.replaceFirst(".otreezip",""));
+                experiment.setTitle(fileName.replaceFirst(".otreezip",""));
+                experiment.setUrl("N/A");
+                experimentMapper.addExperiment(experiment);
             }
-            otreeFile.setFounder(user.getUsername());
-            otreeFile.setDirectory(uploadPath+File.separator+fileName);
-            otreeFile.setTitle(fileName);
-            otreeFile.setFounder_id(user.getId());
-            fileMapper.insertFileRec(otreeFile);
-            //System.out.println(uploadPath);
-            String filePath = uploadPath + File.separator + fileName;
-            System.out.println(filePath);
-            File dir=new File(uploadPath);
-            if(!dir.exists())
-                dir.mkdirs();
-            File dest = new File(filePath);
-            file.transferTo(dest);
 
             // 将文件名保存到数据库中
             return "file upload successfully";
         } catch (IOException e) {
-            e.printStackTrace();
             throw new IOException("unable to upload file");
         }
+    }
+    private void unzipotree(String uploadPath,String fileName, String uniqueFileName) throws IOException {
+        ProcessBuilder processBuilder=new ProcessBuilder();
+        Map<String, String> env = processBuilder.environment();
+        String pathValue = env.get("PATH");
+        String newPathValue = pathValue + ":/home/ubuntu/.local/bin";
+        env.put("PATH", newPathValue);
+        processBuilder.command("bash", "-c", "cd "+uploadPath+" && "+"otree unzip "+fileName+" && rm -f "+fileName+" && mv "+fileName.replaceFirst(".otreezip","")+"/ "+uniqueFileName.replaceFirst(".otreezip",""));
+        Process process = processBuilder.start();
+        return;
     }
 
     private boolean isFileTypeAllowed(MultipartFile file) {

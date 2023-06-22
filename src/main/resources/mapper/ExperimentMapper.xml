@@ -11,17 +11,16 @@
         <result property="url" column="url" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result property="founder" column="founder" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result property="founderId" column="founder_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
-        <result property="createTime" column="create_time" javaType="java.sql.Timestamp" jdbcType="TIMESTAMP"/>
-        <result property="volume" column="volume" javaType="java.lang.Integer" jdbcType="INTEGER"/>
-        <result property="activeTime" column="active_time" javaType="java.sql.Timestamp" jdbcType="TIMESTAMP"/>
-        <result property="zipName" column="zip_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
-        <result property="dictionary" column="dictionary" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="create_time" column="create_time" javaType="java.sql.Timestamp" jdbcType="TIMESTAMP"/>
+        <result property="active_time" column="active_time" javaType="java.sql.Timestamp" jdbcType="TIMESTAMP"/>
+        <result property="directory" column="directory" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="description" column="description" javaType="java.lang.String" jdbcType="VARCHAR"/>
     </resultMap>
 
 
     <insert id="addExperiment" parameterType="com.sof_eng.model.DTO.Experiment">
-        INSERT INTO experiment (title, url, founder, founder_id, create_time, volume, active_time, zip_name, dictionary)
-        VALUES (#{title}, #{url}, #{founder}, #{founderId}, #{createTime}, #{volume}, #{activeTime}, #{zipName}, #{dictionary})
+        INSERT INTO experiment (title, url, founder, founder_id, create_time, active_time, directory)
+        VALUES (#{title}, #{url}, #{founder}, #{founderId}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, #{directory})
     </insert>
 
     <delete id="deleteExperimentById" parameterType="java.lang.Long">
@@ -34,9 +33,9 @@
                               url = #{url},
                               founder = #{founder},
                               founder_id = #{founderId},
-                              create_time = #{createTime},
-                              volume = #{volume},
-                              active_time = #{activeTime}
+                              create_time = #{create_time},
+                              active_time = #{active_time},
+                              description = #{description}
         WHERE id = #{id}
     </update>
 
